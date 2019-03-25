@@ -6,24 +6,29 @@
 package model;
 
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  *
  * @author bruni
  */
-public class Pedidos {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Pedido {
 
-    private String login;
-    private String senha;
-    private Clientes cliente;
-    private List<Itens> itens;
+    private Cliente cliente
+    @XmlElementWrapper(name = "Itens")
+    @XmlElement(name = "Item")
+    private List<Item> itens;
     private double valorTotalPedido;
 
-    public Clientes getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(Clientes cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
@@ -35,27 +40,11 @@ public class Pedidos {
         this.valorTotalPedido = valorTotalPedido;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public List<Itens> getItens() {
+    public List<Item> getItens() {
         return itens;
     }
 
-    public void setItens(List<Itens> itens) {
+    public void setItens(List<Item> itens) {
         this.itens = itens;
     }
 }

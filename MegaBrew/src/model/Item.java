@@ -9,17 +9,17 @@ package model;
  *
  * @author bruni
  */
-public class Itens {
+public class Item {
 
-    private Produtos produto;
+    private Produto produto;
     private double quantidade;
     private double vlrTotal;
 
-    public Produtos getProduto() {
+    public Produto getProduto() {
         return produto;
     }
 
-    public void setProduto(Produtos produto) {
+    public void setProduto(Produto produto) {
         this.produto = produto;
     }
 

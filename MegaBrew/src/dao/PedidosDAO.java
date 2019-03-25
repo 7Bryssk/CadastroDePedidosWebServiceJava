@@ -8,10 +8,10 @@ package dao;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
-import model.Clientes;
-import model.Itens;
-import model.Pedidos;
-import model.Produtos;
+import model.Cliente;
+import model.Item;
+import model.Pedido;
+import model.Produto;
 
 /**
  *
@@ -19,36 +19,38 @@ import model.Produtos;
  */
 public class PedidosDAO {
 
-    private static List<Pedidos> Pedidos
-            = new ArrayList<Pedidos>();
-    private static List<Clientes> Clientes
-            = new ArrayList<Clientes>();
-    private static List<Produtos> Produtos
-            = new ArrayList<Produtos>();
+    private static List<Pedido> Pedidos
+            = new ArrayList<Pedido>();
+    private static List<Cliente> Clientes
+            = new ArrayList<Cliente>();
+    private static List<Produto> Produtos
+            = new ArrayList<Produto>();
 
     static {
-        Clientes cliente = new Clientes();
+        Cliente cliente = new Cliente();
+        cliente.setId(1);
         cliente.setNome("Bruno");
         cliente.setTelefone("(47) 99998-8565");
         cliente.setLogin("bruno");
         cliente.setSenha("bruno");
 
-        Clientes cliente2 = new Clientes();
+        Cliente cliente2 = new Cliente();
+        cliente2.setId(2);
         cliente2.setNome("Felipe");
         cliente2.setTelefone("(47) 99998-8565");
         cliente2.setLogin("felipe");
-        cliente2.setSenha("pedreli");
+        cliente2.setSenha("felipe");
 
         Clientes.add(cliente);
         Clientes.add(cliente2);
 
-        Produtos produto = new Produtos();
+        Produto produto = new Produto();
         produto.setId(1);
         produto.setNome("Cerveja 1");
         produto.setQuantidadde(50);
         produto.setVlrUnit(7.5);
 
-        Produtos produto2 = new Produtos();
+        Produto produto2 = new Produto();
         produto2.setId(2);
         produto2.setNome("Whisky");
         produto2.setQuantidadde(100);
@@ -59,11 +61,7 @@ public class PedidosDAO {
 
     }
 
-    public static List<Pedidos> ObterPedidos() {
-        return Pedidos;
-    }
-
-    public static void CriarPedido(Pedidos pedido) throws ItemNaoCadastradoException, ItemNaoPossuiQuantidadeException, NaoHaItensNaListaException {
+    public static void CriarPedido(Pedido pedido) throws ItemNaoCadastradoException, ItemNaoPossuiQuantidadeException, NaoHaItensNaListaException {
 
         boolean quantidadeMenor = false;
         boolean itemNaoExiste = true;
@@ -74,9 +72,9 @@ public class PedidosDAO {
             throw new NaoHaItensNaListaException();
         } else {
 
-            for (Itens item : pedido.getItens()) {
+            for (Item item : pedido.getItens()) {
                 itemNaoExiste = true;
-                for (Produtos produto : Produtos) {
+                for (Produto produto : Produtos) {
                     if (item.getProduto().getId() == produto.getId()) {
                         item.setProduto(produto);
                         if (item.getQuantidade() > produto.getQuantidadde()) {
@@ -104,8 +102,8 @@ public class PedidosDAO {
 
             if (!quantidadeMenor && !itemNaoExiste) {
 
-                for (Itens item : pedido.getItens()) {
-                    for (Produtos produto : Produtos) {
+                for (Item item : pedido.getItens()) {
+                    for (Produto produto : Produtos) {
                         if (item.getProduto().getId() == produto.getId()) {
                             produto.setQuantidadde(produto.getQuantidadde() - item.getQuantidade());
                         }
@@ -117,11 +115,66 @@ public class PedidosDAO {
         }
     }
 
-    public static List<Produtos> ObterProdutos() {
-        return Produtos;
+    public static List<Pedido> ObterPedidos(long idCliente) {
+        List<Pedido> retornoPedidos = new ArrayList<Pedido>();
+
+        System.out.println(idCliente);
+
+        if (idCliente == 0) {
+            System.out.println("Entrou");
+            retornoPedidos = Pedidos;
+        } else {
+            for (Pedido pedido : Pedidos) {
+                if (pedido.getCliente().getId() == idCliente) {
+                    retornoPedidos.add(pedido);
+                }
+            }
+        }
+
+        return retornoPedidos;
     }
 
-    public static List<Clientes> ObterClientes() {
+    public static List<Produto> ObterProdutos(String nome, long id) {
+
+        List<Produto> retornoProdutos = new ArrayList<Produto>();
+
+        if (!nome.equals("")) {
+            for (Produto produto : Produtos) {
+                if (produto.getNome().toLowerCase().contains(nome.toLowerCase())) {
+                    retornoProdutos.add(produto);
+                }
+            }
+        }
+
+        if (id != 0) {
+            if (!nome.equals("")) {
+                Produto produtoPorId = new Produto();
+                for (Produto produto : retornoProdutos) {
+                    if (produto.getId() == id) {
+                        produtoPorId = produto;
+                    }
+                }
+                retornoProdutos.clear();
+                if (produtoPorId.getId() != 0) {
+                    retornoProdutos.add(produtoPorId);
+                }
+            } else {
+                for (Produto produto : Produtos) {
+                    if (produto.getId() == id) {
+                        retornoProdutos.add(produto);
+                    }
+                }
+            }
+        }
+
+        if (nome.equals("") && id == 0) {
+            return Produtos;
+        }
+
+        return retornoProdutos;
+    }
+
+    public static List<Cliente> ObterClientes() {
         return Clientes;
     }
 }

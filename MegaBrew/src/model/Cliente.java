@@ -9,7 +9,9 @@ package model;
  *
  * @author bruni
  */
-public class Clientes {
+public class Cliente {
+
+    private long Id;
     private String nome;
     private String Telefone;
     private String login;
@@ -45,5 +47,13 @@ public class Clientes {
 
     public void setTelefone(String Telefone) {
         this.Telefone = Telefone;
+    }
+
+    public long getId() {
+        return Id;
+    }
+
+    public void setId(long Id) {
+        this.Id = Id;
     }
 }

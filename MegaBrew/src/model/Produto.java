@@ -9,7 +9,7 @@ package model;
  *
  * @author bruni
  */
-public class Produtos {
+public class Produto {
     private long id;
     private String nome;
     private double vlrUnit;

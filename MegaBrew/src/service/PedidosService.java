@@ -8,6 +8,7 @@ package service;
 import dao.ClienteNaoCadastradoException;
 import dao.ItemNaoCadastradoException;
 import dao.ItemNaoPossuiQuantidadeException;
+import dao.NaoHaItensNaListaException;
 import dao.PedidosDAO;
 import dao.SenhaIncorretaException;
 import java.util.List;
@@ -17,9 +18,9 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
-import model.Clientes;
-import model.Pedidos;
-import model.Produtos;
+import model.Cliente;
+import model.Pedido;
+import model.Produto;
 
 /**
  *
@@ -31,27 +32,30 @@ public class PedidosService {
     private static final String CAT = "cat";
 
     @WebResult(name = "Pedidos")
-    public List<Pedidos> listarPedidos() {
-        return PedidosDAO.ObterPedidos();
+    public List<Pedido> listarPedidos(@WebParam(name = "codigo") long idCliente) {
+        return PedidosDAO.ObterPedidos(idCliente);
     }
 
     @WebResult(name = "Produtos")
-    public List<Produtos> listarProdutos() {
-        return PedidosDAO.ObterProdutos();
+    public List<Produto> listarProdutos(@WebParam(name = "nome") String nomeProduto,
+            @WebParam(name = "codigo") long idProduto
+    ) {
+        return PedidosDAO.ObterProdutos(nomeProduto, idProduto);
     }
 
-    public void criarPedido(@WebParam(name = "pedido") Pedidos pedido,
-            @WebParam(name = "cliente", header = true) Clientes usuario)
-            throws UsuarioNaoAutenticadoException, ItemNaoCadastradoException, ItemNaoPossuiQuantidadeException, SenhaIncorretaException, ClienteNaoCadastradoException {
+    public void criarPedido(@WebParam(name = "pedido") Pedido pedido,
+            @WebParam(name = "login", header = true) String login,
+            @WebParam(name = "senha", header = true) String senha)
+            throws UsuarioNaoAutenticadoException, ItemNaoCadastradoException, ItemNaoPossuiQuantidadeException, SenhaIncorretaException, ClienteNaoCadastradoException, NaoHaItensNaListaException {
 
-        Clientes cliente = new Clientes();
+        Cliente cliente = new Cliente();
 
         boolean senhaIncorreta = false;
         boolean clienteCadastrado = false;
 
-        for (Clientes clienteAtual : PedidosDAO.ObterClientes()) {
-            if (clienteAtual.getLogin().equals(usuario.getLogin())) {
-                if (clienteAtual.getSenha().equals(usuario.getSenha())) {
+        for (Cliente clienteAtual : PedidosDAO.ObterClientes()) {
+            if (clienteAtual.getLogin().equals(login)) {
+                if (clienteAtual.getSenha().equals(senha)) {
                     cliente = clienteAtual;
                     clienteCadastrado = true;
                 } else {
