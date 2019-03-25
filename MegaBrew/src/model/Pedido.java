@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Pedido {
 
-    private Cliente cliente
+    private Cliente cliente;
     @XmlElementWrapper(name = "Itens")
     @XmlElement(name = "Item")
     private List<Item> itens;
