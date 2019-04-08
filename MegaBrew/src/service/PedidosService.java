@@ -12,8 +12,6 @@ import dao.NaoHaItensNaListaException;
 import dao.PedidosDAO;
 import dao.SenhaIncorretaException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;

@@ -9,6 +9,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cliente;
+import model.ClienteJuridico;
 import model.Item;
 import model.Pedido;
 import model.Produto;
@@ -59,6 +60,16 @@ public class PedidosDAO {
         Produtos.add(produto);
         Produtos.add(produto2);
 
+        Pedido pedido1 = new Pedido();
+        ClienteJuridico cliJ = new ClienteJuridico();
+        cliJ.setId(2);
+        cliJ.setNome("Felipe");
+        cliJ.setTelefone("(47) 99998-8565");
+        cliJ.setLogin("felipe");
+        cliJ.setSenha("felipe");
+        cliJ.setCnpj("123456789");
+        pedido1.setCliente(cliJ);
+        Pedidos.add(pedido1);
     }
 
     public static void CriarPedido(Pedido pedido) throws ItemNaoCadastradoException, ItemNaoPossuiQuantidadeException, NaoHaItensNaListaException {

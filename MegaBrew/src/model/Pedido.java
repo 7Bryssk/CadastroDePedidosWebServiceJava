@@ -5,11 +5,14 @@
  */
 package model;
 
+import Utils.AdaptadorDate;
+import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -23,6 +26,8 @@ public class Pedido {
     @XmlElement(name = "Item")
     private List<Item> itens;
     private double valorTotalPedido;
+    @XmlJavaTypeAdapter(AdaptadorDate.class)
+    private Date data = new Date();
 
     public Cliente getCliente() {
         return cliente;
@@ -46,5 +51,13 @@ public class Pedido {
 
     public void setItens(List<Item> itens) {
         this.itens = itens;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
     }
 }
